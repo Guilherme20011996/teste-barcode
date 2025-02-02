@@ -47,6 +47,12 @@ body {
     background: #2980b9;
 }
 
+.file-input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 /* Input de rastreamento */
 input[type="text"] {
     width: 80%;
@@ -86,5 +92,17 @@ button:hover {
     border-radius: 5px;
     font-size: 16px;
     white-space: pre-wrap;
+    text-align: left;
+}
+
+table#data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table#data-table th, table#data-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
     text-align: left;
 }

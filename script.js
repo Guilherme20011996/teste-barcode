@@ -1,7 +1,9 @@
 let trackingData = [];
+let visibleData = [];
+let columns = [];
 
 // Função para carregar a planilha
-document.getElementById('fileInput').addEventListener('change', function(event) {
+document.getElementById('fileInput').addEventListener('change', function (event) {
     const file = event.target.files[0];
     if (!file) {
         alert("Por favor, selecione um arquivo.");
@@ -9,7 +11,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     }
 
     const reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = function (event) {
         const data = new Uint8Array(event.target.result);
         const workbook = XLSX.read(data, { type: 'array' });
 
@@ -19,8 +21,22 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
 
         // Convertendo a planilha para JSON
         trackingData = XLSX.utils.sheet_to_json(sheet);
+        visibleData = trackingData;
+
+        // Armazenando os nomes das colunas
+        columns = XLSX.utils.sheet_to_json(sheet, { header: 1 })[0];
+
+        const dataHeader = document.getElementById("data-header");
+
+        columns.forEach(column => {
+            const th = document.createElement("th");
+            th.textContent = column;
+            dataHeader.appendChild(th);
+        });
+
         console.log("Dados da planilha carregados:", trackingData);
         alert("Planilha carregada com sucesso!");
+        loadTable(visibleData);
     };
     reader.readAsArrayBuffer(file);
 });
@@ -34,6 +50,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+function loadTable(data) {
+    const tbody = document.getElementById("data-body");
+
+    // Limpar o corpo da tabela
+    tbody.innerHTML = "";
+
+    data.forEach(item => {
+        const row = document.createElement("tr");
+
+        columns.forEach(column => {
+            const cell = document.createElement("td");
+            cell.innerText = item[column];
+            row.appendChild(cell);
+        });
+
+        tbody.appendChild(row);
+    });
+}
+
 // Função de busca
 function searchTracking() {
     const trackingNumber = document.getElementById("tracking-input").value.trim();
@@ -45,35 +80,17 @@ function searchTracking() {
     }
 
     // Encontrar as linhas da tabela
-    const tableRows = document.querySelectorAll("#data-table tbody tr");
-    let found = false;
+    let newVisibleData = trackingData.filter(item => item["tracking Number"] === Number(trackingNumber));
 
-    // Iterar sobre cada linha
-    tableRows.forEach(row => {
-        const rowTracking = row.cells[2].textContent.trim();
+    console.table(newVisibleData);
 
-        // Se encontrar o número de rastreamento correspondente
-        if (rowTracking === trackingNumber) {
-            found = true;
-            const orderId = row.cells[0].textContent.trim();
-            const sku = row.cells[1].textContent.trim();
-            const price = row.cells[3].textContent.trim();
-
-            // Exibir os dados da etiqueta
-            document.getElementById("label-result").innerHTML = `
-                <p><strong>Order ID:</strong> ${orderId}</p>
-                <p><strong>SKU:</strong> ${sku}</p>
-                <p><strong>Número de Rastreamento:</strong> ${trackingNumber}</p>
-                <p><strong>Preço:</strong> € ${parseFloat(price).toFixed(2)}</p>
-                <button onclick="printLabel('${orderId}', '${sku}', '${trackingNumber}', '${price}')">Imprimir</button>
-            `;
-        }
-    });
-
-    // Caso não encontre
-    if (!found) {
-        document.getElementById("label-result").innerHTML = "<p>Nenhum resultado encontrado.</p>";
+    if (newVisibleData.length === 0) {
+        alert("Not found :(");
+        return;
     }
+
+    visibleData = newVisibleData;
+    loadTable(visibleData);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -82,39 +99,6 @@ document.addEventListener("DOMContentLoaded", function () {
         searchButton.addEventListener("click", searchTracking);
     }
 });
-
-function searchTracking() {
-    const trackingNumber = document.getElementById("tracking-input").value.trim();
-    if (!trackingNumber) {
-        alert("Por favor, insira um número de rastreamento.");
-        return;
-    }
-
-    const tableRows = document.querySelectorAll("#data-table tbody tr");
-    let found = false;
-
-    tableRows.forEach(row => {
-        const rowTracking = row.cells[2].textContent.trim();
-        if (rowTracking === trackingNumber) {
-            found = true;
-            const orderId = row.cells[0].textContent.trim();
-            const sku = row.cells[1].textContent.trim();
-            const price = row.cells[3].textContent.trim();
-
-            document.getElementById("label-result").innerHTML = `
-                <p><strong>Order ID:</strong> ${orderId}</p>
-                <p><strong>SKU:</strong> ${sku}</p>
-                <p><strong>Rastreamento:</strong> ${trackingNumber}</p>
-                <p><strong>Preço:</strong> € ${parseFloat(price).toFixed(2)}</p>
-                <button onclick="printLabel('${orderId}', '${sku}', '${trackingNumber}', '${price}')">Imprimir</button>
-            `;
-        }
-    });
-
-    if (!found) {
-        document.getElementById("label-result").innerHTML = "<p>Nenhum resultado encontrado.</p>";
-    }
-}
 
 function printLabelDymo(orderId, sku, trackingNumber, price) {
     // Verifica se o SDK da Dymo está carregado
@@ -174,7 +158,7 @@ function printLabelDymo(orderId, sku, trackingNumber, price) {
     try {
         // Carrega o modelo da etiqueta
         const label = dymo.label.framework.openLabelXml(labelXml);
-        
+
         // Obtém a lista de impressoras Dymo conectadas
         const printers = dymo.label.framework.getPrinters();
         if (printers.length === 0) {
