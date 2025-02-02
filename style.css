@@ -1,0 +1,90 @@
+/* Reset global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Estilo do corpo da página */
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Container centralizado */
+.container {
+    max-width: 500px;
+    margin: 30px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+/* Botão de upload */
+.upload-label, button {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+/* Botão de upload */
+.upload-label {
+    background: #3498db;
+    color: white;
+}
+
+.upload-label:hover {
+    background: #2980b9;
+}
+
+/* Input de rastreamento */
+input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Botão de busca */
+button {
+    background: #2ecc71;
+    color: white;
+}
+
+button:hover {
+    background: #27ae60;
+}
+
+/* Botão de impressão */
+#printButton {
+    background: #f39c12;
+    color: white;
+}
+
+#printButton:hover {
+    background: #e67e22;
+}
+
+/* Resultado da pesquisa */
+#label-result {
+    background: #ecf0f1;
+    color: #333;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    white-space: pre-wrap;
+    text-align: left;
+}

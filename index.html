@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rastreamento de Encomendas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>TRADE IN </h1>
+        <h2>BACK MARKET</h2>
+
+        <label for="fileInput" class="upload-label">📂 Select Spreadsheet</label>
+        <input type="file" id="fileInput" accept=".xlsx, .xls">
+
+        <br><br>
+
+        <!--input type="text" id="trackingNumberInput" placeholder="Digite o tracking number "-->
+        <input type="text" id="tracking-input" placeholder=" Search for tracking number
+">
+<button id="search-button">Search</button>
+<button onclick="printLabelDymo('123456789', 'ABC123', 'TRK987654', '€45.99')">
+  Imprimir Etiqueta
+</button>  
+<!-- Resultado da busca -->
+<div id="label-result"></div>
+
+ <!--button onclick="searchTracking()">🔍 Buscar</button-->
+  <!--h2>Resultado:</h2>
+        <pre id="label-result">Nenhum resultado encontrado.</pre-->
+
+        <button id="printButton" onclick="printLabel()" style="display:none;">🖨️ Print labels</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <script src="https://labelwriter.com/software/dls/sdk/js/DYMO.Label.Framework.latest.js"></script>
+
+
+
+
+</body>
+</html>
