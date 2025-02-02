@@ -41,6 +41,10 @@ document.getElementById('fileInput').addEventListener('change', function (event)
     reader.readAsArrayBuffer(file);
 });
 
+document.getElementById("reset-button").addEventListener("click", function () {
+    visibleData = trackingData;
+    loadTable(visibleData);
+});
 
 document.addEventListener("DOMContentLoaded", function () {
     // Garantir que o botão de busca esteja funcionando
