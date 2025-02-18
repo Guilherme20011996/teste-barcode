@@ -1,0 +1,22 @@
+{
+    "orders": [
+      {
+        "order_number": "ORD123456",
+        "tracking_number": "TRK987654321",
+        "sku": "SKU-001-ABC",
+        "price": 49.99
+      },
+      {
+        "order_number": "ORD123457",
+        "tracking_number": "TRK987654322",
+        "sku": "SKU-002-XYZ",
+        "price": 79.99
+      },
+      {
+        "order_number": "ORD123458",
+        "tracking_number": "TRK987654323",
+        "sku": "SKU-003-PQR",
+        "price": 29.99
+      }
+    ]
+  }

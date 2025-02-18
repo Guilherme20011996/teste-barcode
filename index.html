@@ -5,65 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rastreamento de Encomendas</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-
     <div class="container">
         <h1>TRADE IN </h1>
         <h2>BACK MARKET</h2>
 
-        <div class="file-input-container">
-            <input type="file" id="fileInput" accept=".xlsx, .xls" style="display:none;">
-            <label for="fileInput" class="upload-label">📂 Select Spreadsheet</label>
-            <span id="file-name" style="margin-left: 10px;">No file selected</span>
-        </div>
-
-        <script>
-            const fileInput = document.getElementById('fileInput');
-            const fileName = document.getElementById('file-name');
-
-            fileInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    fileName.textContent = file.name;
-                } else {
-                    fileName.textContent = 'No file selected';
-                }
-            });
-        </script>
-
-        <br><br>
-
-        <!--input type="text" id="trackingNumberInput" placeholder="Digite o tracking number "-->
         <input type="text" id="tracking-input" placeholder=" Search for tracking number">
         <button id="search-button">Search</button>
-        <button onclick="printLabelDymo('123456789', 'ABC123', 'TRK987654', '€45.99')">
-            Imprimir Etiqueta
-        </button>
         <button id="reset-button">Reset</button>
-        <!-- Resultado da busca -->
-        <!-- <div id="label-result"></div> -->
+        <button id="print-button">Print label</button>
 
-        <!--button onclick="searchTracking()">🔍 Buscar</button-->
-        <!--h2>Resultado:</h2>
-        <pre id="label-result">Nenhum resultado encontrado.</pre-->
-
+        
         <table id="data-table">
-            <thead id="data-header">
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Tracking Number</th>
+                    <th>SKU</th>
+                    <th>Price</th>
+                </tr>
             </thead>
             <tbody id="data-body">
             </tbody>
         </table>
-
-        <button id="printButton" onclick="printLabel()" style="display:none;">🖨️ Print labels</button>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
-    <!-- <script src="https://labelwriter.com/software/dls/sdk/js/DYMO.Label.Framework.latest.js"></script> -->
-    <script src="script.js"></script>
+    
+    <script src="jquery/jquery.js" type="text/jquery"></script> 
+    <script src="https://labelwriter.com/software/dls/sdk/js/DYMO.Label.Framework.latest.js"></script>
+    <script src="js/dymo-sdk.js"></script>
+    <script src="script.js" type="text/javascript"></script>    
 </body>
-
 </html>
