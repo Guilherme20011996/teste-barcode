@@ -9,7 +9,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: 'http://localhost:3000/orders?tracking_number_like=' + trackingNumber, 
+            url: 'http://localhost:3000/orders?tracking_number=' + trackingNumber,
             method: 'GET',
             success: function (response) {
                 console.log('Resposta da API:', response);
@@ -21,7 +21,7 @@ $(document).ready(function () {
 
                     let row = `<tr>
                         <td>${order.order_number}</td>
-                        <td id="print-tracking">${order.tracking_number}</td>  <!-- AQUI ESTÁ O TRACKING -->
+                        <td id="print-tracking">${order.tracking_number}</td>
                         <td>${order.sku}</td>
                         <td>€${order.price.toFixed(2)}</td>
                     </tr>`;
@@ -63,19 +63,26 @@ $(document).ready(function () {
             }
 
             let printerName = printers[0].name; // Pega a primeira impressora disponível
+            console.log('Impressora DYMO encontrada:', printerName);
 
-            // Carregar o modelo da etiqueta
-            $.get('label_template.dymo', function (labelXml) {
+            // Carregar o modelo da etiqueta a partir da pasta "template"
+            $.get('template/label_template.dymo', function (labelXml) {
+                console.log("Modelo de etiqueta carregado:", labelXml);
+
+                // Carrega e abre o arquivo do modelo de etiqueta
                 let label = dymo.label.framework.openLabelXml(labelXml);
 
-                // Definir o valor do Tracking Number no campo da etiqueta
+                // Substitui o texto do objeto TrackingNumber com o número de rastreamento
                 label.setObjectText("TrackingNumber", trackingNumber);
 
-                // Enviar para impressão
+                // Envia para a impressora DYMO
                 label.print(printerName);
-                alert(`Etiqueta com Tracking Number "${trackingNumber}" enviada para impressão!`);
-            });
 
+                alert(`Etiqueta com Tracking Number "${trackingNumber}" enviada para impressão!`);
+            }).fail(function() {
+                console.error('Erro ao carregar o modelo de etiqueta.');
+                alert('Erro ao carregar o modelo de etiqueta. Verifique o arquivo template/label_template.dymo.');
+            });
         } catch (error) {
             console.error('Erro ao imprimir:', error);
             alert('Erro ao imprimir a etiqueta.');

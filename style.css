@@ -68,12 +68,12 @@ button:hover {
 }
 
 /* Botão de impressão */
-#printButton {
+#print-Button {
     background: #f39c12;
     color: white;
 }
 
-#printButton:hover {
+#print-Button:hover {
     background: #e67e22;
 }
 
